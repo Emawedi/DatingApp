@@ -50,6 +50,9 @@ namespace DatingApp.API.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
         {
+            
+            
+            
             var userFromRepo = await _repo.Login(userForLoginDto.Username.ToLower(), userForLoginDto.Password);
             if(userFromRepo == null)
             {
@@ -73,28 +76,32 @@ namespace DatingApp.API.Controllers
 
             // 2. we create a security key in our appsettings.json file
 
-             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config.GetSection("AppSettings:Token").Value));
 
             // 3. the is part of the signing credentials and we choose the hashing algorithm and we create the signiture
-             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             // 4. we create a token descriptor and pass our claims, expire date and our signature
-             var tokenDescriptor = new SecurityTokenDescriptor
-             {
-                 Subject = new ClaimsIdentity(claims),
-                 Expires = DateTime.Now.AddDays(1),
-                 SigningCredentials = creds
-             };
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
 
             // 5. we create a new instance of the token handler and we pass our token descriptor in order to create the token
-             var tokenHandler = new JwtSecurityTokenHandler();
+            var tokenHandler = new JwtSecurityTokenHandler();
 
-             var token = tokenHandler.CreateToken(tokenDescriptor);
+            var token = tokenHandler.CreateToken(tokenDescriptor);
 
             // 6. we write the token to the response that we send to the client
-             return Ok(new {
-                 token = tokenHandler.WriteToken(token)
-             });
+            return Ok(new {
+                token = tokenHandler.WriteToken(token)
+            });
+
+            
+
+            
 
         }
     }
