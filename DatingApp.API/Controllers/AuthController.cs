@@ -40,7 +40,7 @@ namespace DatingApp.API.Controllers
             }
 
             var userToCreate = new User{
-                Usernamen = userForRegisterDto.Username
+                Username = userForRegisterDto.Username
             };
             var createdUser = await _repo.Register(userToCreate, userForRegisterDto.Password);
             return StatusCode(201);
@@ -71,7 +71,7 @@ namespace DatingApp.API.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, userFromRepo.Id.ToString()),
-                new Claim(ClaimTypes.Name, userFromRepo.Usernamen)
+                new Claim(ClaimTypes.Name, userFromRepo.Username)
             };
 
             // 2. we create a security key in our appsettings.json file
